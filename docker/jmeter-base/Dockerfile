@@ -1,5 +1,5 @@
 FROM alpine:3.8
-LABEL maintainer="kaarol@it-flow.pl"
+LABEL maintainer="frcolas"
 
 ENV JMETER_VERSION "5.3"
 
