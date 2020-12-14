@@ -1,4 +1,4 @@
-FROM frcolas/jmeter-base:latest
+FROM 722626/jmeter-base:5.3
 LABEL maintainer="frcolas"
 
 EXPOSE 1099 60001
