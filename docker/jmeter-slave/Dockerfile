@@ -1,5 +1,5 @@
-FROM kaarol/jmeter-base:latest
-LABEL maintainer="kaarol@it-flow.pl"
+FROM frcolas/jmeter-base:latest
+LABEL maintainer="frcolas"
 
 EXPOSE 1099 60001
 ENV SSL_DISABLED true
