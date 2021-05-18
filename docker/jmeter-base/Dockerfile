@@ -1,4 +1,4 @@
-FROM egaillardon/jmeter:5.2.1-1.0.0
+FROM alpine:3.8
 LABEL maintainer="frcolas"
 ENV JMETER_VERSION "5.3"
 ENV JMETER_PLUGINS_MANAGER_VERSION 1.3
