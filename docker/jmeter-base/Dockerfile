@@ -1,37 +1,28 @@
-FROM alpine:3.8
+FROM 722626/jmeter-base:5.3
 LABEL maintainer="frcolas"
-ENV JMETER_VERSION "5.3"
-ENV JMETER_PLUGINS_MANAGER_VERSION 1.3
+ENV JMETER_PLUGINS_MANAGER_VERSION 1.4
 ENV CMDRUNNER_VERSION 2.2
 ENV JSON_LIB_VERSION 2.4
 ENV JSON_LIB_FULL_VERSION ${JSON_LIB_VERSION}-jdk15
 ENV NUMBER_OF_FILES_UNDER_LIB 166
-ENV NUMBER_OF_FILES_UNDER_LIB_EXT 80
-RUN apk update && \
-apk upgrade && \
-apk add --no-cache \
-curl \
-fontconfig \
-net-tools \
-shadow \
-su-exec \
-tcpdump  \
-ttf-dejavu \
-apk add --update openjdk8-jre wget tar bash && \
-wget http://mirror.nbtelecom.com.br/apache//jmeter/binaries/apache-jmeter-${JMETER_VERSION}.tgz && \
-mkdir -p /opt/jmeter && \
-tar -zxf apache-jmeter-${JMETER_VERSION}.tgz -C /opt/jmeter/  --strip-components=1 && \
-rm -rf apache-jmeter-${JMETER_VERSION}.tgz && \
-rm -rf /var/cache/apk/* && \
-wget -O /usr/bin/tpl https://github.com/schneidexe/tpl/releases/download/v0.4.4/tpl-linux-amd64 && \
-cd /tmp/ \
+ENV NUMBER_OF_FILES_UNDER_LIB_EXT 81
+RUN 
+ && apk add --no-cache \
+    curl \
+    fontconfig \
+    net-tools \
+    shadow \
+    su-exec \
+    tcpdump  \
+    ttf-dejavu \
+ && cd /tmp/ \
  && curl --location --silent --show-error --output ${JMETER_HOME}/lib/ext/jmeter-plugins-manager-${JMETER_PLUGINS_MANAGER_VERSION}.jar http://search.maven.org/remotecontent?filepath=kg/apc/jmeter-plugins-manager/${JMETER_PLUGINS_MANAGER_VERSION}/jmeter-plugins-manager-${JMETER_PLUGINS_MANAGER_VERSION}.jar \
  && curl --location --silent --show-error --output ${JMETER_HOME}/lib/cmdrunner-${CMDRUNNER_VERSION}.jar http://search.maven.org/remotecontent?filepath=kg/apc/cmdrunner/${CMDRUNNER_VERSION}/cmdrunner-${CMDRUNNER_VERSION}.jar \
  && curl --location --silent --show-error --output ${JMETER_HOME}/lib/json-lib-${JSON_LIB_FULL_VERSION}.jar https://search.maven.org/remotecontent?filepath=net/sf/json-lib/json-lib/${JSON_LIB_VERSION}/json-lib-${JSON_LIB_FULL_VERSION}.jar \
  && java -cp ${JMETER_HOME}/lib/ext/jmeter-plugins-manager-${JMETER_PLUGINS_MANAGER_VERSION}.jar org.jmeterplugins.repository.PluginManagerCMDInstaller \
  && PluginsManagerCMD.sh install \
 blazemeter-debugger=0.6,\
-bzm-hls=3.0,\
+bzm-hls=3.0.1,\
 bzm-http2=1.5,\
 bzm-jmeter-citrix-plugin=0.5.5,\
 bzm-parallel=0.9,\
@@ -39,10 +30,11 @@ bzm-random-csv=0.6,\
 bzm-rte=2.3,\
 bzm-siebel=0.1.0-beta,\
 custom-soap=1.3.3,\
-jmeter.backendlistener.azure=0.2.0,\
+jmeter.backendlistener.azure=0.2.1,\
 jmeter.backendlistener.elasticsearch=2.6.10,\
 jmeter.backendlistener.kafka=1.0.0,\
 jmeter.pack-listener=1.7,\
+jmeter-pubsub-sampler=1.0,\
 jpgc-autostop=0.1,\
 jpgc-casutg=2.9,\
 jpgc-cmd=2.2,\
@@ -64,7 +56,7 @@ jpgc-graphs-vs=2.0,\
 jpgc-hadoop=2.0,\
 jpgc-httpraw=0.1,\
 jpgc-jms=0.2,\
-jpgc-jmxmon=0.2,\
+jpgc-jmxmon=0.3,\
 jpgc-json=2.7,\
 jpgc-lockfile=0.1,\
 jpgc-mergeresults=2.1,\
@@ -82,7 +74,7 @@ jpgc-sts=2.4,\
 jpgc-synthesis=2.2,\
 jpgc-tst=2.5,\
 jpgc-udp=0.4,\
-jpgc-webdriver=3.1,\
+jpgc-webdriver=3.3,\
 jpgc-wsc=0.7,\
 jpgc-xml=0.1,\
 jpgc-xmpp=1.5.1,\
@@ -90,7 +82,7 @@ kafkameter=0.2.0,\
 mqtt-sampler=0.0.1-SNAPSHOT,\
 netflix-cassandra=0.2-SNAPSHOT,\
 ssh-sampler=1.1.1-SNAPSHOT,\
-tilln-iso8583=1.0,\
+tilln-iso8583=1.1,\
 tilln-sshmon=1.2,\
 tilln-wssecurity=1.7,\
 websocket-sampler=1.0.2-SNAPSHOT,\
@@ -100,5 +92,4 @@ websocket-samplers=1.2.2 \
  && chmod +x ${JMETER_HOME}/bin/*.sh \
  && if [ `ls -l /opt/apache-jmeter-*/lib/ | wc -l` != ${NUMBER_OF_FILES_UNDER_LIB} ]; then exit -1; fi \
  && if [ `ls -l /opt/apache-jmeter-*/lib/ext/ | wc -l` != ${NUMBER_OF_FILES_UNDER_LIB_EXT} ]; then exit -1; fi \
- && rm -fr /tmp/* \
-chmod +x /usr/bin/tpl \
+ && rm -fr /tmp/*
