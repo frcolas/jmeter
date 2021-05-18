@@ -88,7 +88,4 @@ websocket-sampler=1.0.2-SNAPSHOT,\
 websocket-samplers=1.2.2 \
  && jmeter --version \
  && PluginsManagerCMD.sh status \
- && chmod +x ${JMETER_HOME}/bin/*.sh \
- && if [ `ls -l /opt/jmeter/lib/ | wc -l` != ${NUMBER_OF_FILES_UNDER_LIB} ]; then exit -1; fi \
- && if [ `ls -l /opt/jmeter/lib/ext/ | wc -l` != ${NUMBER_OF_FILES_UNDER_LIB_EXT} ]; then exit -1; fi \
- && rm -fr /tmp/*
+ && chmod +x ${JMETER_HOME}/bin/*.sh
