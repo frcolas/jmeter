@@ -1,4 +1,4 @@
-FROM alpine:3.8
+FROM egaillardon/jmeter:5.2.1-1.0.0
 LABEL maintainer="frcolas"
 ENV JMETER_VERSION "5.3"
 ENV JMETER_PLUGINS_MANAGER_VERSION 1.3
@@ -17,6 +17,7 @@ rm -rf apache-jmeter-${JMETER_VERSION}.tgz && \
 rm -rf /var/cache/apk/* && \
 wget -O /usr/bin/tpl https://github.com/schneidexe/tpl/releases/download/v0.4.4/tpl-linux-amd64 && \
 chmod +x /usr/bin/tpl \
+cd /tmp/ \
  && curl --location --silent --show-error --output ${JMETER_HOME}/lib/ext/jmeter-plugins-manager-${JMETER_PLUGINS_MANAGER_VERSION}.jar http://search.maven.org/remotecontent?filepath=kg/apc/jmeter-plugins-manager/${JMETER_PLUGINS_MANAGER_VERSION}/jmeter-plugins-manager-${JMETER_PLUGINS_MANAGER_VERSION}.jar \
  && curl --location --silent --show-error --output ${JMETER_HOME}/lib/cmdrunner-${CMDRUNNER_VERSION}.jar http://search.maven.org/remotecontent?filepath=kg/apc/cmdrunner/${CMDRUNNER_VERSION}/cmdrunner-${CMDRUNNER_VERSION}.jar \
  && curl --location --silent --show-error --output ${JMETER_HOME}/lib/json-lib-${JSON_LIB_FULL_VERSION}.jar https://search.maven.org/remotecontent?filepath=net/sf/json-lib/json-lib/${JSON_LIB_VERSION}/json-lib-${JSON_LIB_FULL_VERSION}.jar \
@@ -74,7 +75,7 @@ jpgc-sts=2.4,\
 jpgc-synthesis=2.2,\
 jpgc-tst=2.5,\
 jpgc-udp=0.4,\
-jpgc-webdriver=3.3,\
+jpgc-webdriver=3.1,\
 jpgc-wsc=0.7,\
 jpgc-xml=0.1,\
 jpgc-xmpp=1.5.1,\
@@ -93,6 +94,3 @@ websocket-samplers=1.2.2 \
  && if [ `ls -l /opt/apache-jmeter-*/lib/ | wc -l` != ${NUMBER_OF_FILES_UNDER_LIB} ]; then exit -1; fi \
  && if [ `ls -l /opt/apache-jmeter-*/lib/ext/ | wc -l` != ${NUMBER_OF_FILES_UNDER_LIB_EXT} ]; then exit -1; fi \
  && rm -fr /tmp/*
-
-ENV JMETER_HOME /opt/jmeter
-ENV PATH $PATH:$JMETER_HOME/bin
