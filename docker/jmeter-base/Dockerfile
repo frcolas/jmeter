@@ -1,4 +1,4 @@
-FROM 722626/jmeter-base:5.3
+FROM 722626/jmeter-main:5.3
 LABEL maintainer="frcolas"
 ENV JMETER_PLUGINS_MANAGER_VERSION 1.4
 ENV CMDRUNNER_VERSION 2.2
@@ -7,14 +7,6 @@ ENV JSON_LIB_FULL_VERSION ${JSON_LIB_VERSION}-jdk15
 ENV NUMBER_OF_FILES_UNDER_LIB 166
 ENV NUMBER_OF_FILES_UNDER_LIB_EXT 81
 RUN cd /tmp/ \
- && apk add --no-cache \
-    curl \
-    fontconfig \
-    net-tools \
-    shadow \
-    su-exec \
-    tcpdump  \
-    ttf-dejavu \
  && curl --location --silent --show-error --output ${JMETER_HOME}/lib/ext/jmeter-plugins-manager-${JMETER_PLUGINS_MANAGER_VERSION}.jar http://search.maven.org/remotecontent?filepath=kg/apc/jmeter-plugins-manager/${JMETER_PLUGINS_MANAGER_VERSION}/jmeter-plugins-manager-${JMETER_PLUGINS_MANAGER_VERSION}.jar \
  && curl --location --silent --show-error --output ${JMETER_HOME}/lib/cmdrunner-${CMDRUNNER_VERSION}.jar http://search.maven.org/remotecontent?filepath=kg/apc/cmdrunner/${CMDRUNNER_VERSION}/cmdrunner-${CMDRUNNER_VERSION}.jar \
  && curl --location --silent --show-error --output ${JMETER_HOME}/lib/json-lib-${JSON_LIB_FULL_VERSION}.jar https://search.maven.org/remotecontent?filepath=net/sf/json-lib/json-lib/${JSON_LIB_VERSION}/json-lib-${JSON_LIB_FULL_VERSION}.jar \
@@ -88,4 +80,7 @@ websocket-sampler=1.0.2-SNAPSHOT,\
 websocket-samplers=1.2.2 \
  && jmeter --version \
  && PluginsManagerCMD.sh status \
- && chmod +x ${JMETER_HOME}/bin/*.sh
+ && chmod +x ${JMETER_HOME}/bin/*.sh \
+ && if [ `ls -l /opt/apache-jmeter-*/lib/ | wc -l` != ${NUMBER_OF_FILES_UNDER_LIB} ]; then exit -1; fi \
+ && if [ `ls -l /opt/apache-jmeter-*/lib/ext/ | wc -l` != ${NUMBER_OF_FILES_UNDER_LIB_EXT} ]; then exit -1; fi \
+ && rm -fr /tmp/*
