@@ -92,5 +92,5 @@ websocket-samplers=1.2.2 \
  && chmod +x ${JMETER_HOME}/bin/*.sh \
  && if [ `ls -l /opt/apache-jmeter-*/lib/ | wc -l` != ${NUMBER_OF_FILES_UNDER_LIB} ]; then exit -1; fi \
  && if [ `ls -l /opt/apache-jmeter-*/lib/ext/ | wc -l` != ${NUMBER_OF_FILES_UNDER_LIB_EXT} ]; then exit -1; fi \
- && rm -fr /tmp/*
+ && rm -fr /tmp/* \
 chmod +x /usr/bin/tpl \
