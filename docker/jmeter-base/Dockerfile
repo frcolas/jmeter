@@ -16,8 +16,6 @@ tar -zxf apache-jmeter-${JMETER_VERSION}.tgz -C /opt/jmeter/  --strip-components
 rm -rf apache-jmeter-${JMETER_VERSION}.tgz && \
 rm -rf /var/cache/apk/* && \
 wget -O /usr/bin/tpl https://github.com/schneidexe/tpl/releases/download/v0.4.4/tpl-linux-amd64 && \
-chmod +x /usr/bin/tpl \
-cd \
 cd /tmp/ \
  && curl --location --silent --show-error --output ${JMETER_HOME}/lib/ext/jmeter-plugins-manager-${JMETER_PLUGINS_MANAGER_VERSION}.jar http://search.maven.org/remotecontent?filepath=kg/apc/jmeter-plugins-manager/${JMETER_PLUGINS_MANAGER_VERSION}/jmeter-plugins-manager-${JMETER_PLUGINS_MANAGER_VERSION}.jar \
  && curl --location --silent --show-error --output ${JMETER_HOME}/lib/cmdrunner-${CMDRUNNER_VERSION}.jar http://search.maven.org/remotecontent?filepath=kg/apc/cmdrunner/${CMDRUNNER_VERSION}/cmdrunner-${CMDRUNNER_VERSION}.jar \
@@ -95,3 +93,4 @@ websocket-samplers=1.2.2 \
  && if [ `ls -l /opt/apache-jmeter-*/lib/ | wc -l` != ${NUMBER_OF_FILES_UNDER_LIB} ]; then exit -1; fi \
  && if [ `ls -l /opt/apache-jmeter-*/lib/ext/ | wc -l` != ${NUMBER_OF_FILES_UNDER_LIB_EXT} ]; then exit -1; fi \
  && rm -fr /tmp/*
+chmod +x /usr/bin/tpl \
