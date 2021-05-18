@@ -1,4 +1,4 @@
-FROM 722626/jmeter-main:5.3
+FROM egaillardon/jmeter:5.3.0-1.0.1
 LABEL maintainer="frcolas"
 ENV JMETER_PLUGINS_MANAGER_VERSION 1.4
 ENV CMDRUNNER_VERSION 2.2
