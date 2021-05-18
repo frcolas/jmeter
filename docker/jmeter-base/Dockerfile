@@ -6,7 +6,7 @@ ENV JSON_LIB_VERSION 2.4
 ENV JSON_LIB_FULL_VERSION ${JSON_LIB_VERSION}-jdk15
 ENV NUMBER_OF_FILES_UNDER_LIB 166
 ENV NUMBER_OF_FILES_UNDER_LIB_EXT 81
-RUN 
+RUN cd /tmp/ \
  && apk add --no-cache \
     curl \
     fontconfig \
@@ -15,7 +15,6 @@ RUN
     su-exec \
     tcpdump  \
     ttf-dejavu \
- && cd /tmp/ \
  && curl --location --silent --show-error --output ${JMETER_HOME}/lib/ext/jmeter-plugins-manager-${JMETER_PLUGINS_MANAGER_VERSION}.jar http://search.maven.org/remotecontent?filepath=kg/apc/jmeter-plugins-manager/${JMETER_PLUGINS_MANAGER_VERSION}/jmeter-plugins-manager-${JMETER_PLUGINS_MANAGER_VERSION}.jar \
  && curl --location --silent --show-error --output ${JMETER_HOME}/lib/cmdrunner-${CMDRUNNER_VERSION}.jar http://search.maven.org/remotecontent?filepath=kg/apc/cmdrunner/${CMDRUNNER_VERSION}/cmdrunner-${CMDRUNNER_VERSION}.jar \
  && curl --location --silent --show-error --output ${JMETER_HOME}/lib/json-lib-${JSON_LIB_FULL_VERSION}.jar https://search.maven.org/remotecontent?filepath=net/sf/json-lib/json-lib/${JSON_LIB_VERSION}/json-lib-${JSON_LIB_FULL_VERSION}.jar \
@@ -74,7 +73,7 @@ jpgc-sts=2.4,\
 jpgc-synthesis=2.2,\
 jpgc-tst=2.5,\
 jpgc-udp=0.4,\
-jpgc-webdriver=3.3,\
+jpgc-webdriver=3.1,\
 jpgc-wsc=0.7,\
 jpgc-xml=0.1,\
 jpgc-xmpp=1.5.1,\
