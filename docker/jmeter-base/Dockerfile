@@ -9,6 +9,14 @@ ENV NUMBER_OF_FILES_UNDER_LIB 166
 ENV NUMBER_OF_FILES_UNDER_LIB_EXT 80
 RUN apk update && \
 apk upgrade && \
+apk add --no-cache \
+curl \
+fontconfig \
+net-tools \
+shadow \
+su-exec \
+tcpdump  \
+ttf-dejavu \
 apk add --update openjdk8-jre wget tar bash && \
 wget http://mirror.nbtelecom.com.br/apache//jmeter/binaries/apache-jmeter-${JMETER_VERSION}.tgz && \
 mkdir -p /opt/jmeter && \
