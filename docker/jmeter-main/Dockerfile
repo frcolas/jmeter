@@ -7,7 +7,7 @@ ENV JMETER_HOME /opt/apache-jmeter-${JMETER_VERSION}
 ENV JMETER_BIN ${JMETER_HOME}/bin
 ENV ALPN_VERSION 8.1.13.v20181017
 ENV PATH ${JMETER_BIN}:$PATH
-COPY entrypoint.sh /usr/local/bin/
+ADD entrypoint.sh /usr/local/bin/entrypoint.sh
 RUN chmod +x /usr/local/bin/entrypoint.sh \
  && apk add --no-cache \
     curl \
