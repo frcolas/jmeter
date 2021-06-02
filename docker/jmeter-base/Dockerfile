@@ -32,8 +32,8 @@ RUN    apk update \
 
 ENV PATH $PATH:$JMETER_BIN
 
-COPY ./launch.sh /
+ADD launch.sh /launch.sh
 RUN chmod +x /launch.sh
 
-ENTRYPOINT ["/launch.sh"]
+ENTRYPOINT /launch.sh
 CMD ["-n -t /mnt/jmeter/script.jmx -l /mnt/jmeter/results/reslut-$(date +'%m_%d_%Y-%H_%M_%S_%N').jtl -j /mnt/jmeter/logs/master-log-$(date +'%m_%d_%Y-%H_%M_%S_%N').log"]
