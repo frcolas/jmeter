@@ -11,6 +11,9 @@ ENV JMETER_DOWNLOAD_URL ${MIRROR_HOST}/binaries/apache-jmeter-${JMETER_VERSION}.
 ENV JMETER_PLUGINS_DOWNLOAD_URL https://repo1.maven.org/maven2/kg/apc
 ENV JMETER_PLUGINS_FOLDER ${JMETER_HOME}/lib/ext/
 
+#Time Zone https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+ENV TIMEZONE Asia/Kolkata
+
 RUN    apk update \
 	&& apk upgrade \
 	&& apk add ca-certificates \
