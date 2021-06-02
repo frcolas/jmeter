@@ -1,18 +1,36 @@
-FROM egaillardon/jmeter:5.3.0-1.0.1
-LABEL maintainer="frcolas"
-ENV JMETER_PLUGINS_MANAGER_VERSION 1.6
-ENV CMDRUNNER_VERSION 2.2.1
-ENV JSON_LIB_VERSION 2.4
-ENV JSON_LIB_FULL_VERSION ${JSON_LIB_VERSION}-jdk15
-RUN cd /tmp/ \
- && curl --location --silent --show-error --output ${JMETER_HOME}/ext/jmeter-plugins-manager-${JMETER_PLUGINS_MANAGER_VERSION}.jar http://search.maven.org/remotecontent?filepath=kg/apc/jmeter-plugins-manager/${JMETER_PLUGINS_MANAGER_VERSION}/jmeter-plugins-manager-${JMETER_PLUGINS_MANAGER_VERSION}.jar \
- && curl --location --silent --show-error --output ${JMETER_HOME}/cmdrunner-${CMDRUNNER_VERSION}.jar http://search.maven.org/remotecontent?filepath=kg/apc/cmdrunner/${CMDRUNNER_VERSION}/cmdrunner-${CMDRUNNER_VERSION}.jar \
- && curl --location --silent --show-error --output ${JMETER_HOME}/json-lib-${JSON_LIB_FULL_VERSION}.jar https://search.maven.org/remotecontent?filepath=net/sf/json-lib/json-lib/${JSON_LIB_VERSION}/json-lib-${JSON_LIB_FULL_VERSION}.jar \
- && java -cp ${JMETER_HOME}/ext/jmeter-plugins-manager-${JMETER_PLUGINS_MANAGER_VERSION}.jar org.jmeterplugins.repository.PluginManagerCMDInstaller \
- && PluginsManagerCMD.sh install \
-jpgc-perfmon=2.1,\
-jpgc-webdriver=3.1,\
- && jmeter --version \
- && PluginsManagerCMD.sh status \
- && chmod +x ${JMETER_HOME}/bin/*.sh \
- && rm -fr /tmp/*
+#docker build -t jmeter:test .
+FROM alpine
+RUN apk add --no-cache --upgrade bash
+
+ARG JMETER_VERSION="5.3"
+
+ENV JMETER_HOME /opt/apache-jmeter-${JMETER_VERSION}
+ENV JMETER_BIN  ${JMETER_HOME}/bin
+ENV MIRROR_HOST http://mirrors.ocf.berkeley.edu/apache/jmeter
+ENV JMETER_DOWNLOAD_URL ${MIRROR_HOST}/binaries/apache-jmeter-${JMETER_VERSION}.tgz
+ENV JMETER_PLUGINS_DOWNLOAD_URL https://repo1.maven.org/maven2/kg/apc
+ENV JMETER_PLUGINS_FOLDER ${JMETER_HOME}/lib/ext/
+
+RUN    apk update \
+	&& apk upgrade \
+	&& apk add ca-certificates \
+	&& update-ca-certificates \
+            && apk add --update openjdk8-jre tzdata curl unzip bash \
+            && cp /usr/share/zoneinfo/${TIMEZONE} /etc/localtime \
+            && echo ${TIMEZONE} >  /etc/timezone \
+	&& rm -rf /var/cache/apk/* \
+	&& mkdir -p /tmp/dependencies  \
+	&& curl -L ${JMETER_DOWNLOAD_URL} >  /tmp/dependencies/apache-jmeter-${JMETER_VERSION}.tgz  \
+	&& mkdir -p /opt  \
+	&& tar -xzf /tmp/dependencies/apache-jmeter-${JMETER_VERSION}.tgz -C /opt  \
+	&& rm -rf /tmp/dependencies \
+	&& curl -L ${JMETER_PLUGINS_DOWNLOAD_URL}/cmdrunner/2.2/cmdrunner-2.2.jar -o ${JMETER_HOME}/lib/cmdrunner-2.2.jar \
+	&& curl -L ${JMETER_PLUGINS_DOWNLOAD_URL}/jmeter-plugins-manager/1.4/jmeter-plugins-manager-1.4.jar -o ${JMETER_PLUGINS_FOLDER}/jmeter-plugins-manager-1.4.jar
+
+ENV PATH $PATH:$JMETER_BIN
+
+COPY ./launch.sh /
+RUN chmod +x /launch.sh
+
+ENTRYPOINT ["/launch.sh"]
+CMD ["-n -t /mnt/jmeter/script.jmx -l /mnt/jmeter/results/reslut-$(date +'%m_%d_%Y-%H_%M_%S_%N').jtl -j /mnt/jmeter/logs/master-log-$(date +'%m_%d_%Y-%H_%M_%S_%N').log"]
