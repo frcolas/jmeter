@@ -2,7 +2,7 @@
 FROM alpine
 RUN apk add --no-cache --upgrade bash
 
-ARG JMETER_VERSION="5.3"
+ARG JMETER_VERSION="5.4.3"
 
 ENV JMETER_HOME /opt/apache-jmeter-${JMETER_VERSION}
 ENV JMETER_BIN  ${JMETER_HOME}/bin
